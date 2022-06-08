@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import Web3 from 'web3';
 
 const MainContext = createContext();
 
 function MainContextProvider({ ...props }) {
 
     const [account, setAccount] = useState(undefined);
-    const [provider, setProvider] = useState(undefined);
+    const [provider, setProvider] = useState(Web3.givenProvider);
 
 
     useEffect(() => {

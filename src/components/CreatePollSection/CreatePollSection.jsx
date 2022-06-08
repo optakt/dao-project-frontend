@@ -5,7 +5,7 @@ import './CreatePollSection.scss'
 function CreatePollSection() {
     return (
         <div className='createPollSectionWrapper'>
-            <Button variant='outlined' color='primary'>
+            <Button variant='outlined' color='primary' disabled>
                 Create Poll
             </Button>
         </div>
