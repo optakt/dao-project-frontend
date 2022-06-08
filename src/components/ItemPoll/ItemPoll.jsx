@@ -1,8 +1,18 @@
+
 import './ItemPoll.scss'
 
-function ItemPoll({poll: Definitions,Poll}) {
+function ItemPoll({ poll }) {
   return (
-    <div>ItemPoll</div>
+
+    <div className='itemPollWrapper'>
+      <div className='itemPollTitle'>
+        {poll.title}
+      </div>
+      <div className='itemPollDescription'>
+        {poll.description}
+      </div>
+    </div>
+
   )
 }
 
