@@ -1,6 +1,7 @@
-import { Button } from '@mui/material'
+
 import './AppBar.scss'
 import LogoIcon from 'assets/optakt-logo-black.svg'
+import ConnectWallet from 'components/ConnectWallet/ConnectWallet'
 
 function AppBar() {
     return (
@@ -10,9 +11,7 @@ function AppBar() {
             </div>
             <div className='connectSection'>
 
-                <Button variant='outlined' color='primary'>
-                    Connect Wallet
-                </Button>
+                <ConnectWallet />
             </div>
 
         </div>
