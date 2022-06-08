@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+}
+
+.notificationComponent {
+  .rnc__notification-item--success {
+    background-color: #7eade4bf;
+    border-left-color: #034dff;
+  }
+
+  .rnc__notification-message{
+    color: #034dff;
+  }
+}

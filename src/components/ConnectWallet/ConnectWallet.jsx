@@ -1,44 +1,50 @@
 import { Button } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import WalletConnectProvider from '@walletconnect/web3-provider';
 import Web3Modal from 'web3modal';
 import Web3 from 'web3';
+import { useMainContext } from 'context/MainContext';
 import './ConnectWallet.scss'
+import { notify } from 'helpers/notify';
 
 
+const infuraId = '330f5597349f485b89704ee14455c9eb'; // TODO - Just for testing purposes
+
+
+const providerOptions = {
+    walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+            infuraId,
+        },
+    },
+};
+
+const web3Modal = new Web3Modal({
+    network: 'mainnet',
+    cacheProvider: false,
+    providerOptions,
+});
 
 function ConnectWallet() {
+    const { setProvider, account, setAccount }= useMainContext();
 
-    //
-    // Connection Logic
-    //
     const [connected, setConnected] = useState(false);
-    const [account, setAccount] = useState(undefined);
-    const [provider, setProvider] = useState(undefined);
 
-    const providerOptions = {
-        walletconnect: {
-            package: WalletConnectProvider,
-            options: {
-                infuraId: '994ffbdba376443ba4b5bb1e714467d1',
-            },
-        },
-    };
 
-    const web3Modal = new Web3Modal({
-        network: 'mainnet',
-        cacheProvider: false,
-        providerOptions,
-    });
+    useEffect(() => {
+        web3Modal.clearCachedProvider();
+    }, [])
 
-    web3Modal.clearCachedProvider();
-
-    console.log({ account, provider })
 
 
     const connect = async () => {
         if (connected) {
             setConnected(false);
+            setAccount(undefined);
+            setProvider(undefined);
+            web3Modal.clearCachedProvider();
+            notify('Disconnected from wallet');
             return;
         }
         const tempProvider = await web3Modal.connect();
@@ -48,19 +54,12 @@ function ConnectWallet() {
         try {
             const accounts = await web3.eth.getAccounts();
 
-            console.log({ accounts });
             setAccount(accounts[0]);
             setConnected(true);
             setProvider(tempProvider);
 
-            // await checkApproval(inputCurrency.name, outputCurrency.name, accounts[0]);
+            notify('Connected to wallet successfully')
 
-            // notify({
-            //     type: 'Success',
-            //     message: 'Connected to wallet successfully',
-            // });
-
-            console.log('Connected to wallet successfully');
         } catch (e) {
             console.log(e);
         }
@@ -68,14 +67,16 @@ function ConnectWallet() {
 
 
     return (
-        <div>
+        <div className='connectWalletWrapper'>
+
             <Button
                 variant='outlined'
                 color='primary'
                 onClick={connect}
             >
-                Connect Wallet
+                {connected ? 'Disconnect Wallet' : 'Connect Wallet'}
             </Button>
+            <div className='accountNumber'>{account}</div>
         </div>
     )
 }
