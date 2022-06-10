@@ -47,6 +47,7 @@ function MainContextProvider({ ...props }) {
     useEffect(() => {
         console.log({ provider })
     }, [provider]);
+    
 
     return (
         <MainContext.Provider

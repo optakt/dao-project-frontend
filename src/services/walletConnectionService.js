@@ -30,14 +30,13 @@ export const connectWalletService = async () => {
 
     const wallet = await web3.eth.accounts.wallet
 
-    console.log({wallet})
-    
-    if (accounts.length < 1) throw new Error('No accounts found');
+    if (!provider || !accounts || !wallet || accounts.length < 1) throw new Error('No accounts found');
 
 
     return {
         accounts,
-        provider
+        provider,
+        wallet
     }
 
 
