@@ -1,12 +1,14 @@
 import ItemPoll from 'components/ItemPoll/ItemPoll'
-import { listOfPolls } from '__tests__/FAKE_listOfPolls'
+import { useMainContext } from 'context/MainContext'
 import './ListOfPolls.scss'
 
-function ListOfPolls({ polls=listOfPolls }) {
+function ListOfPolls() {
+  const { pollList } = useMainContext();
+
   return (
     <div className='listOfPollsWrapper'>
         {
-            polls.map(poll => (
+            pollList.map(poll => (
                 <ItemPoll key={poll.id} poll={poll} />
             ))
         }

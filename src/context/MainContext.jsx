@@ -1,5 +1,6 @@
 import { notify } from 'helpers/notify';
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createPoll, fetchPolls, isUserAllowed } from 'services/pollsService';
 import { clearCacheModal, connectWalletService } from 'services/walletConnectionService';
 import Web3 from 'web3';
 
@@ -10,6 +11,8 @@ function MainContextProvider({ ...props }) {
     const [account, setAccount] = useState(undefined);
     const [provider, setProvider] = useState(Web3.givenProvider);
     const [connected, setConnected] = useState(false);
+
+    const [pollList, setPollList] = useState([])
 
     const connectWallet = useCallback(() => {
         if (connected) {
@@ -23,6 +26,13 @@ function MainContextProvider({ ...props }) {
         (async () => {
 
             const { accounts, provider } = await connectWalletService();
+
+            const firstAccount = accounts[0];
+
+            const isAuthorized = await isUserAllowed(firstAccount);
+
+            if (!isAuthorized) return;
+
             setAccount(accounts[0]);
             setConnected(true);
             setProvider(provider);
@@ -33,8 +43,24 @@ function MainContextProvider({ ...props }) {
 
     }, [connected])
 
-    useEffect(() => {
+    const insertPoll = async (poll) => {
+        const createdPoll = await createPoll(poll);
 
+        if (createdPoll) {
+            setPollList(oldPolls => [...oldPolls, createdPoll])
+            notify('Poll created successfully');
+
+        } else {
+            notify('Error creating poll');
+        }
+    };
+
+    useEffect(() => {
+        (async () => {
+            const polls = await fetchPolls();
+            setPollList(polls);
+        })();
+        
         clearCacheModal();
 
     }, [])
@@ -47,12 +73,14 @@ function MainContextProvider({ ...props }) {
     useEffect(() => {
         console.log({ provider })
     }, [provider]);
-    
+
 
     return (
         <MainContext.Provider
             value={{
                 connectWallet,
+                insertPoll,
+                pollList,
                 account,
                 provider,
                 connected,
