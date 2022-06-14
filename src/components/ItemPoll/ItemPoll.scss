@@ -9,14 +9,46 @@
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 
-    .itemPollAuthor {
+    &:hover{
+        box-shadow: -4px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    &>div {
+        margin: 10px;
+    }
+
+
+
+    .itemPollGeneral {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
         color: #1876d1;
-        font-size: 12px;
-        border: 1px solid #1876d1;
-        border-radius: 4px;
-        padding: 0 2px;
-        align-self: flex-end;
+        font-size: 10px;
+        margin-top: -10px;// trick for margin top only on item flex
+
+        &>div {
+            margin-top: 10px;
+        }
+
+        .itemPollAuthor {
+
+            border: 1px solid #1876d1;
+            border-radius: 4px;
+            padding: 0 2px;
+        }
+
+        .itemPollTimeLock {
+
+            border: 1px solid #1876d1;
+            border-radius: 4px;
+            padding: 0 2px;
+        }
+
+
     }
 
     .itemPollTitle {
@@ -27,6 +59,7 @@
 
     .itemPollDescription {
         width: 100%;
+
         padding: 10px;
         border-radius: 10px;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
