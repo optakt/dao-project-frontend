@@ -9,7 +9,7 @@ function ListOfPolls() {
     <div className='listOfPollsWrapper'>
         {
             pollList.map(poll => (
-                <ItemPoll key={poll.id} poll={poll} />
+                <ItemPoll key={poll._id} poll={poll} />
             ))
         }
     </div>

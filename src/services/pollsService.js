@@ -1,4 +1,6 @@
 import { getAllPolls, insertPoll } from "./localStoreService";
+import { add } from 'date-fns'
+import Web3 from 'web3';
 
 const FAKE_authUsers = [
     '0xfEaEf71aBdC43CBc99CAc158dA7F64a556Ed9Eff',
@@ -14,6 +16,8 @@ const FAKE_authUsers = [
     '0xfEaEf71aBdC43CBc99CAc158dA7F64a556Ed9E0a',
 ]
 
+const TIME_LOCK_POLL=  { hours: 1 }; // 1 hour
+
 export const isUserAllowed = (token) => {
     return new Promise((resolve) => {
 
@@ -27,10 +31,14 @@ export const isUserAllowed = (token) => {
 }
 
 export const createPoll = (poll) => {
-    
+
+    const _id = Web3.utils.randomHex(24);
+    const timeLock = add(new Date(),TIME_LOCK_POLL);
+
+    const newPoll = { ...poll,timeLock, _id };
     return new Promise((resolve) => {
 
-        setTimeout(() => { resolve(insertPoll(poll)); }, 200);
+        setTimeout(() => { resolve(insertPoll(newPoll)); }, 200);
 
     });
 }
